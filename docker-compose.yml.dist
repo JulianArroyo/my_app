@@ -1,0 +1,71 @@
+version: '3.5'
+
+services:
+  my-app-container-be:
+    container_name: my-app-container-be
+    build:
+      context: ./docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    ###> XDEBUG 3 ###
+    # Use your client IP here
+    # Linux: run "ip a | grep docker0"
+    # Windows (with WSL2) and Mac: host.docker.internal
+    environment:
+      XDEBUG_CLIENT_HOST: 172.17.0.1
+      XDEBUG_CLIENT_PORT: 9003
+      PHP_IDE_CONFIG: my-app
+    ports:
+      - '80:8000'
+    networks:
+      - global-mysql-network
+      - global-rabbitmq-network
+      - global-postgresql-network
+
+  my-app-container-postgresql:
+    container_name: my-app-container-postgresql
+    image: postgres:14-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: postgresql
+      POSTGRES_DB: my_app_db
+    volumes:
+      - /home/usuario/Projects/dockerDBdata/postgres-14:/var/lib/postgresql/data
+    networks:
+      - global-postgresql-network
+
+  my-app-container-mysql:
+    container_name: my-app-container-mysql
+    image: mysql:8.0.29
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: my_app_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - /home/usuario/Projects/dockerDBdata/mysql8.0:/var/lib/mysql
+    networks:
+      - global-mysql-network
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+  my-app-container-rabbitmq:
+    container_name: my-app-container-rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - global-rabbitmq-network
+
+networks:
+  global-mysql-network:
+    external: true
+  global-rabbitmq-network:
+    external: true
+  global-postgresql-network:
+    external: true
+
