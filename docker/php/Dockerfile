@@ -11,6 +11,7 @@ RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
 
 # Install packages and PHP extensions
 RUN apt update \
+    && apt upgrade -y \
     # common libraries and extensions
     && apt install -y git acl openssl openssh-client wget zip sendmail wkhtmltopdf xvfb \
     && apt install -y libpng-dev zlib1g-dev libzip-dev libbz2-dev libgmp-dev libxml2-dev libtidy-dev libxslt1-dev libicu-dev \
