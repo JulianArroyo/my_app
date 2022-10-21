@@ -42,9 +42,14 @@ RUN chmod a+x php-cs-fixer
 RUN mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
 ## Install Symfony binary
-RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt update \
     && apt install -y symfony-cli
+
+## Install Symfony binary (DEPRECATED)
+#RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
+#RUN apt update \
+#    && apt install -y symfony-cli
 
 ## Install Symfony binary (DEPRECATED)
 #USER appuser
