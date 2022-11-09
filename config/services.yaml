@@ -3,7 +3,27 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
+# Importing Configuration with imports -> https://symfony.com/doc/current/service_container/import.html
+## config/services.yaml
+#imports:
+#    - { resource: route/to/services.yaml }
+#    # If you want to import a whole directory:
+#    - { resource: route/to/services/ }
+imports:
+    # Shared
+    - { resource: '../src/Shared/Infrastructure/Config/Services/' }
+    # NO FUNCIONAN IMPORTACIONES DINÁMICAS DE ESTE TIPO:
+#    - { resource: '%app.shared_config_services_path%/Services/' }
+#    - { resource: '../src/Shared/Infrastructure/Config/%env(resolve:CLIENT)%/Services/' }
+#    - { resource: ../src/Shared/Infrastructure/Config/%app.client%/Services/ }
+#    - { resource: '../src/Shared/Infrastructure/Config/${CLIENT}/Services/' }
+
 parameters:
+    # DEFINICIONES PARA INTENTAR REALIZAR IMPORTACIONES DINÁMICAS
+#    app.client: '%env(resolve:CLIENT)%'
+#    app.shared_config_services_path: '../src/Shared/Infrastructure/Config/%app.client%/Services/'
+#    app.shared_config_services_path: '../src/Shared/Infrastructure/Config'
 
 services:
     # default configuration for services in *this* file
@@ -23,9 +43,23 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-# Importing Configuration with imports -> https://symfony.com/doc/current/service_container/import.html
-## config/services.yaml
-#imports:
-#    - { resource: route/to/services.yaml }
-#    # If you want to import a whole directory:
-#    - { resource: route/to/services/ }
+
+#    App\Shared\Infrastructure\Controller\HealthCheck\HealthCheckGetController:
+#        class: App\Shared\Infrastructure\Controller\HealthCheck\HealthCheckGetController
+#        public: true
+#        arguments:
+#            - '@App\Shared\Domain\UUIDGenerator\UUIDGenerator'
+
+#    App\Shared\Infrastructure\Controller\HealthCheck\HealthCheckGetController:
+#        tags:
+#            - 'controller.service_arguments'
+
+#    App\Shared\Domain\UUIDGenerator\UUID:
+#        tags:
+#            - 'controller.service_arguments'
+
+#    App\Shared\Domain\UUIDGenerator\UUIDGenerator: '@App\Shared\Domain\UUIDGenerator\UUID'
+
+
+#    App\Shared\Domain\UUIDGenerator\UUIDGenerator:
+#        class: App\Shared\Domain\UUIDGenerator\UUID

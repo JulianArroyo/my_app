@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\UUIDGenerator;
 
-final class UUID
+final class UUID implements UUIDGenerator
 {
-    public static function v3($namespace, $name)
+    public static function v3($namespace, $name): ?string
     {
-        if(!self::is_valid($namespace)) return false;
+        if(!self::is_valid($namespace)) return null;
 
         // Get hexadecimal components of namespace
         $nhex = \str_replace(['-','{','}'], '', $namespace);
@@ -46,7 +46,8 @@ final class UUID
         );
     }
 
-    public static function v4() {
+    public static function v4(): string
+    {
         return \sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 
             // 32 bits for "time_low"
@@ -69,8 +70,9 @@ final class UUID
         );
     }
 
-    public static function v5($namespace, $name) {
-        if(!self::is_valid($namespace)) return false;
+    public static function v5($namespace, $name): ?string
+    {
+        if(!self::is_valid($namespace)) return null;
 
         // Get hexadecimal components of namespace
         $nhex = \str_replace(['-','{','}'], '', $namespace);

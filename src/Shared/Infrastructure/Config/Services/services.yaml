@@ -1,0 +1,7 @@
+services:
+  App\Shared\Infrastructure\Controller\HealthCheck\HealthCheckGetController:
+    tags:
+      - 'controller.service_arguments'
+
+  App\Shared\Domain\UUIDGenerator\UUIDGenerator:
+    class: App\Shared\Domain\UUIDGenerator\UUID
