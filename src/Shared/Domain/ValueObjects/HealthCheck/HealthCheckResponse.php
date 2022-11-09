@@ -11,19 +11,19 @@ final class HealthCheckResponse
     public function __construct($data)
     {
         if (!is_array($data)) {
-            throw new \InvalidArgumentException("Parameter must be an array");
+            throw new \InvalidArgumentException('Parameter must be an array');
         }
         if (!array_key_exists('message', $data)) {
-            throw new \InvalidArgumentException("Parameter must contains a `message` key");
+            throw new \InvalidArgumentException('Parameter must contains a `message` key');
         }
         if (!array_key_exists('data', $data)) {
-            throw new \InvalidArgumentException("Parameter must contains a `data` key");
+            throw new \InvalidArgumentException('Parameter must contains a `data` key');
         }
         if (!array_key_exists('errors', $data)) {
-            throw new \InvalidArgumentException("Parameter must contains a `errors` key");
+            throw new \InvalidArgumentException('Parameter must contains a `errors` key');
         }
         if (!array_key_exists('status', $data)) {
-            throw new \InvalidArgumentException("Parameter must contains a `status` key");
+            throw new \InvalidArgumentException('Parameter must contains a `status` key');
         }
 
         $this->data = $data;

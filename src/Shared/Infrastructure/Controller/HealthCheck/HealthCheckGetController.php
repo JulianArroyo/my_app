@@ -16,6 +16,6 @@ final class HealthCheckGetController
 //        return (new CreateHealthCheckResponseUseCase($UUIDGenerator))->__invoke();
 //        $response = new CreateHealthCheckResponseUseCase();
 //        return $response();
-         return (new CreateHealthCheckResponseUseCase($UUIDGenerator))();
+        return (new CreateHealthCheckResponseUseCase($UUIDGenerator))();
     }
 }

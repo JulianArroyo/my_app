@@ -24,11 +24,12 @@ final class CreateHealthCheckResponseUseCase
             $hcResponse = new HealthCheckResponse([
                 'message' => 'HealthCheckResponse works fine',
                 'data' => [
-                    'uuid' => $this->UUIDGenerator::v4()
+                    'uuid' => $this->UUIDGenerator::v4(),
                 ],
                 'errors' => [],
-                'status' => Response::HTTP_OK
+                'status' => Response::HTTP_OK,
             ]);
+
             return new APIResponse(
                 $hcResponse->message(),
                 $hcResponse->data(),
