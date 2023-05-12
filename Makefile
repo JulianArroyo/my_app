@@ -38,14 +38,26 @@ prepare: ## Runs backend commands
 server-start: ## starts the Symfony development server
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:start -d
 
+win-server-start: ## starts the Symfony development server
+	U_ID=${UID} winpty docker exec -it --user ${UID} ${DOCKER_BE} symfony server:start -d
+
 server-status: ## show status of the Symfony development server
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:status
+
+win-server-status: ## show status of the Symfony development server
+	U_ID=${UID} winpty docker exec -it --user ${UID} ${DOCKER_BE} symfony server:status
 
 server-stop: ## stop the Symfony development server
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:stop
 
-logs: ## Show Symfony logs in real time
+win-server-stop: ## stop the Symfony development server
+	U_ID=${UID} winpty docker exec -it --user ${UID} ${DOCKER_BE} symfony server:stop
+
+server-logs: ## Show Symfony logs in real time
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:log
+
+win-server-logs: ## Show Symfony logs in real time
+	U_ID=${UID} winpty docker exec -it --user ${UID} ${DOCKER_BE} symfony server:log
 
 # Backend commands
 composer-install: ## Installs composer dependencies

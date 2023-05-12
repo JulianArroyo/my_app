@@ -10,23 +10,28 @@ RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
 RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
 
 # Install packages and PHP extensions
-RUN apt update \
+RUN apt-get update \
     && apt upgrade -y \
     # common libraries and extensions
-    && apt install -y git acl openssl openssh-client wget zip sendmail wkhtmltopdf xvfb \
-    && apt install -y libpng-dev zlib1g-dev libzip-dev libbz2-dev libgmp-dev libxml2-dev libtidy-dev libxslt1-dev libicu-dev \
-    && docker-php-ext-install intl pdo zip bz2 calendar gettext gmp soap tidy xsl gd\
+    && apt-get install -y vim ca-certificates apt-transport-https software-properties-common lsb-release \
+    && apt-get install -y curl bzip2 zip unzip xz-utils gnupg git acl openssl openssh-client wget \
+    && apt-get install -y libpng-dev zlib1g-dev libzip-dev libbz2-dev libgmp-dev libxml2-dev libtidy-dev libxslt1-dev libicu-dev \
+    && docker-php-ext-install -j "$(nproc)" bcmath bz2 calendar gettext gmp intl soap tidy xsl zip pdo gd \
     # for MySQL
-    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install -j "$(nproc)" pdo_mysql \
     # for Postgres
-    && apt install -y libpq-dev \
-    && docker-php-ext-install pdo_pgsql \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-install -j "$(nproc)" pdo_pgsql \
     # for RabbitMQ and XDEBUG
-    && docker-php-ext-install bcmath sockets \
-    && apt install -y librabbitmq-dev vim libssh-dev \
-    && pecl install xdebug amqp-1.11.0 \
+    && docker-php-ext-install -j "$(nproc)" sockets \
+    && apt-get install -y librabbitmq-dev libssh-dev \
+    # https://chrisshennan.com/blog/fixing-pecl-xdebug-requires-php-version-8-installed-version-7-4
+    # https://stackoverflow.com/questions/75029280/install-xdebug-for-php-7-4-on-m1-apple
+    # https://xdebug.org/docs/compat
+    && pecl install xdebug-3.1.6 amqp-1.11.0 \
     # enable Docker extensions
-    && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug amqp bcmath bz2 calendar gettext gmp intl soap tidy xsl zip pdo_mysql pdo_pgsql gd
+    && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug amqp bcmath bz2 calendar gettext gmp intl soap tidy xsl zip pdo_mysql pdo_pgsql gd \
+    && echo "Done."
 
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
