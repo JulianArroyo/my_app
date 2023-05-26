@@ -67,17 +67,32 @@ composer-install: ## Installs composer dependencies
 ssh-be: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
 
+win-ssh-be: ## bash into the be container
+	U_ID=${UID} winpty docker exec -it --user ${UID} ${DOCKER_BE} bash
+
 ssh-be-root: ## bash into the be container with root user
 	docker exec -it --user root ${DOCKER_BE} bash
+
+win-ssh-be-root: ## bash into the be container with root user
+	winpty docker exec -it --user root ${DOCKER_BE} bash
 
 ssh-postgres-root: ## bash into the postgres container with root user
 	docker exec -it --user root ${DOCKER_POSTGRES} bash
 
+win-ssh-postgres-root: ## bash into the postgres container with root user
+	winpty docker exec -it --user root ${DOCKER_POSTGRES} bash
+
 ssh-mysql-root: ## bash into the mysql container with root user
 	docker exec -it --user root ${DOCKER_MYSQL} bash
 
+win-ssh-mysql-root: ## bash into the mysql container with root user
+	winpty docker exec -it --user root ${DOCKER_MYSQL} bash
+
 ssh-rabbitmq-root: ## bash into the rabbitmq container with root user
 	docker exec -it --user root ${DOCKER_RABBIT} bash
+
+win-ssh-rabbitmq-root: ## bash into the rabbitmq container with root user
+	winpty docker exec -it --user root ${DOCKER_RABBIT} bash
 
 code-style: ## Runs php-cs to fix code styling following Symfony rules
 	U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} php-cs-fixer fix src --rules=@Symfony
